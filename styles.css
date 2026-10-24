@@ -156,14 +156,23 @@ nav a:hover {
     color: white;
 }
 
-/* Grid de Libros */
+
+
+/* Grid de Libros con Scroll Horizontal */
 .books-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 30px;
+    display: flex; /* Cambiamos de grid a flex para el scroll */
+    gap: 20px;
+    overflow-x: auto; /* Permite desplazamiento lateral */
+    overflow-y: hidden; /* Evita scroll vertical */
+    padding-bottom: 20px; /* Espacio para la barra de scroll */
+    scroll-snap-type: x mandatory; /* Hace que el scroll se detenga en cada libro (opcional pero se ve bien) */
 }
 
+/* Ajuste a las tarjetas para que no se encojan en el flex */
 .book-card {
+    min-width: 220px; /* Ancho fijo para que no se aplasten */
+    max-width: 220px;
+    scroll-snap-align: start; /* Alineación para el scroll-snap */
     background: var(--blanco);
     padding: 15px;
     border-radius: 8px;
@@ -174,60 +183,29 @@ nav a:hover {
     transition: transform 0.2s;
 }
 
-.book-card:hover {
-    transform: translateY(-5px);
+/* --- PERSONALIZACIÓN DE LA BARRA DE SCROLL --- */
+/* Barra general */
+.books-grid::-webkit-scrollbar {
+    height: 10px; /* Grosor de la barra horizontal */
 }
 
-.book-image {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    background-color: #ddd;
+/* Fondo de la barra (gris claro) */
+.books-grid::-webkit-scrollbar-track {
+    background: #e0e0e0; 
+    border-radius: 10px;
 }
 
-.book-title {
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
+/* El control deslizante (rojo de la tienda) */
+.books-grid::-webkit-scrollbar-thumb {
+    background: var(--color-precio); 
+    border-radius: 10px;
+    border: 2px solid #e0e0e0; /* Borde para darle un efecto más limpio */
 }
 
-.book-author {
-    font-size: 0.85rem;
-    color: #666;
-    margin-bottom: 10px;
+/* Hover del control deslizante */
+.books-grid::-webkit-scrollbar-thumb:hover {
+    background: #a93226; /* Un rojo más oscuro al pasar el mouse */
 }
-
-.book-price {
-    font-size: 1.2rem;
-    color: var(--color-precio);
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.btn-add {
-    background-color: var(--color-precio);
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-.btn-add:hover {
-    background-color: #a93226;
-}
-
-.btn-add:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
 /* Paginación */
 .pagination {
     display: flex;
