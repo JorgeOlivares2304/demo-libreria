@@ -151,7 +151,10 @@ function renderCarrito() {
 
         const div = document.createElement('div');
         div.className = 'cart-item';
+        
+        // --- AQUI ESTA EL CAMBIO: Agregamos la imagen y agrupamos el texto ---
         div.innerHTML = `
+            <img src="${libro.img}" alt="${libro.titulo}" class="cart-item-img">
             <div class="cart-item-info">
                 <div class="cart-item-title">${libro.titulo}</div>
                 <div class="cart-item-price">$${libro.precio} x ${item.cantidad} = $${subtotal.toFixed(2)}</div>
