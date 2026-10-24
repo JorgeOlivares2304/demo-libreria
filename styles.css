@@ -156,23 +156,21 @@ nav a:hover {
     color: white;
 }
 
-
-
 /* Grid de Libros con Scroll Horizontal */
 .books-grid {
-    display: flex; /* Cambiamos de grid a flex para el scroll */
+    display: flex;
     gap: 20px;
-    overflow-x: auto; /* Permite desplazamiento lateral */
-    overflow-y: hidden; /* Evita scroll vertical */
-    padding-bottom: 20px; /* Espacio para la barra de scroll */
-    scroll-snap-type: x mandatory; /* Hace que el scroll se detenga en cada libro (opcional pero se ve bien) */
+    overflow-x: auto; /* Desplazamiento lateral */
+    overflow-y: hidden; /* Sin scroll vertical */
+    padding-bottom: 20px; /* Espacio para la barra */
+    scroll-snap-type: x mandatory; /* Ajuste magnético al hacer scroll */
 }
 
-/* Ajuste a las tarjetas para que no se encojan en el flex */
+/* Tarjetas de libros adaptadas al flex */
 .book-card {
-    min-width: 220px; /* Ancho fijo para que no se aplasten */
+    min-width: 220px;
     max-width: 220px;
-    scroll-snap-align: start; /* Alineación para el scroll-snap */
+    scroll-snap-align: start;
     background: var(--blanco);
     padding: 15px;
     border-radius: 8px;
@@ -183,32 +181,83 @@ nav a:hover {
     transition: transform 0.2s;
 }
 
-/* --- PERSONALIZACIÓN DE LA BARRA DE SCROLL --- */
-/* Barra general */
-.books-grid::-webkit-scrollbar {
-    height: 10px; /* Grosor de la barra horizontal */
+.book-card:hover {
+    transform: translateY(-5px);
 }
 
-/* Fondo de la barra (gris claro) */
+.book-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: #ddd;
+}
+
+.book-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.book-author {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.book-price {
+    font-size: 1.2rem;
+    color: var(--color-precio);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.btn-add {
+    background-color: var(--color-precio);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-add:hover {
+    background-color: #a93226;
+}
+
+.btn-add:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* --- PERSONALIZACIÓN DE LA BARRA DE SCROLL --- */
+.books-grid::-webkit-scrollbar {
+    height: 10px;
+}
+
 .books-grid::-webkit-scrollbar-track {
     background: #e0e0e0; 
     border-radius: 10px;
 }
 
-/* El control deslizante (rojo de la tienda) */
 .books-grid::-webkit-scrollbar-thumb {
     background: var(--color-precio); 
     border-radius: 10px;
-    border: 2px solid #e0e0e0; /* Borde para darle un efecto más limpio */
+    border: 2px solid #e0e0e0; 
 }
 
-/* Hover del control deslizante */
 .books-grid::-webkit-scrollbar-thumb:hover {
-    background: #a93226; /* Un rojo más oscuro al pasar el mouse */
+    background: #a93226; 
 }
-/* Paginación */
+
+/* Paginación (Oculta, pero se mantiene por si se necesita) */
 .pagination {
-    display: flex;
+    display: none; /* Oculto porque usamos scroll */
     justify-content: center;
     margin-top: 40px;
     gap: 10px;
@@ -227,9 +276,55 @@ nav a:hover {
     color: white;
 }
 
+/* --- SECCIÓN CONÓCENOS --- */
+.conocenos-section {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid #ddd;
+}
+
+.conocenos-texto {
+    flex: 1;
+}
+
+.conocenos-title {
+    color: var(--color-precio);
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.conocenos-texto p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.conocenos-destacado {
+    color: var(--color-precio);
+    font-weight: bold;
+    font-size: 1.1rem !important;
+    margin-top: 20px;
+}
+
+.conocenos-imagen {
+    flex: 1;
+}
+
+.conocenos-imagen img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    object-fit: cover;
+    max-height: 400px;
+}
+
 /* --- MODAL DEL CARRITO --- */
 .modal {
-    display: none; /* Oculto por defecto */
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -371,66 +466,15 @@ footer ul li {
     font-size: 1.5rem;
 }
 
-/* Responsive */
+/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
     header { flex-direction: column; gap: 10px; }
     .search-bar { width: 100%; }
     .hero h1 { font-size: 1.8rem; }
     .modal-content { width: 95%; }
-}
-/* ========================================== */
-/* ESTILOS PARA LA SECCIÓN CONÓCENOS          */
-/* ========================================== */
-
-.conocenos-section {
-    display: flex;
-    align-items: center; /* Centra verticalmente texto e imagen */
-    gap: 40px; /* Espacio entre texto e imagen */
-    margin-top: 60px;
-    padding-top: 40px;
-    border-top: 1px solid #ddd; /* Línea sutil de separación */
-}
-
-.conocenos-texto {
-    flex: 1; /* Ocupa la mitad del espacio */
-}
-
-.conocenos-title {
-    color: var(--color-precio); /* Usa el rojo de la paleta */
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-}
-
-.conocenos-texto p {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: #444;
-    margin-bottom: 15px;
-}
-
-.conocenos-destacado {
-    color: var(--color-precio);
-    font-weight: bold;
-    font-size: 1.1rem !important;
-    margin-top: 20px;
-}
-
-.conocenos-imagen {
-    flex: 1; /* Ocupa la otra mitad del espacio */
-}
-
-.conocenos-imagen img {
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    object-fit: cover;
-    max-height: 400px; /* Altura máxima para que no se desborde */
-}
-
-/* Diseño responsivo para móviles */
-@media (max-width: 768px) {
+    
     .conocenos-section {
-        flex-direction: column; /* Texto arriba, imagen abajo */
+        flex-direction: column;
         gap: 20px;
     }
     
