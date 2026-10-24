@@ -23,7 +23,7 @@ const libros = [
     { id: 9, titulo: "Una habitación propia", autor: "Virginia Woolf", precio: 240, categoria: "Clásico", stock: 2, img: "https://images.unsplash.com/photo-1509266272358-7701da638078?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
     { id: 11, titulo: "Ariel", autor: "José Enrique Rodó", precio: 120, categoria: "Clásico", stock: 5, img: "https://images.unsplash.com/photo-1490633874781-1c63cc424610?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
     { id: 20, titulo: "La Odisea", autor: "Homero", precio: 320, categoria: "Clásico", stock: 4, img: "https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
-    { id: 21, titulo: "Hamlet", autor: "William Shakespeare", precio: 200, categoria: "Clásico", stock: 6, img: "https://images.unsplash.com/photo-1524578271613-d550eacf6090?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
+    { id: 21, titulo: "Hamlet", autor: "William Shakespeare", precio: 200, categoria: "Clásico", stock: 0, img: "https://images.unsplash.com/photo-1524578271613-d550eacf6090?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
 
     // --- Poesía (6 libros) ---
     { id: 10, titulo: "Veinte poemas de amor", autor: "Pablo Neruda", precio: 200, categoria: "Poesía", stock: 8, img: "https://images.unsplash.com/photo-1474932430478-367dbb6832c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
