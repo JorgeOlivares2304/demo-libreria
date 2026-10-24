@@ -360,14 +360,26 @@ nav a:hover {
 
 .cart-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Centra verticalmente imagen y texto */
     border-bottom: 1px solid #eee;
-    padding: 10px 0;
+    padding: 15px 0; /* Un poco más de espacio */
+    gap: 15px; /* Espacio entre la imagen y el texto */
 }
 
+/* NUEVA CLASE: Estilo para la miniatura de la imagen */
+.cart-item-img {
+    width: 50px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Ajuste a la información para que ocupe el espacio disponible */
 .cart-item-info {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .cart-item-title {
