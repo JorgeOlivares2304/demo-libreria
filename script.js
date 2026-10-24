@@ -177,3 +177,54 @@ window.eliminarDelCarrito = (id) => {
 
 // Búsqueda
 searchInput.addEventListener('input', (e) => {
+    terminoBusqueda = e.target.value;
+    renderLibros();
+});
+
+// Filtros de Categoría
+filterContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('filter-btn')) {
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        filtroCategoria = e.target.dataset.category;
+        renderLibros();
+    }
+});
+
+// Abrir Modal Carrito
+document.getElementById('cartBtn').addEventListener('click', abrirCarrito);
+
+// Cerrar Modal (X)
+document.querySelector('.close').addEventListener('click', () => {
+    cartModal.style.display = "none";
+});
+
+// Cerrar Modal (Click fuera)
+window.addEventListener('click', (e) => {
+    if (e.target == cartModal) {
+        cartModal.style.display = "none";
+    }
+});
+
+// Vaciar Carrito
+document.getElementById('clearCartBtn').addEventListener('click', () => {
+    if(confirm("¿Estás seguro de vaciar el carrito?")) {
+        carrito = [];
+        actualizarContador();
+        renderCarrito();
+    }
+});
+
+// Proceder al Pago
+document.getElementById('checkoutBtn').addEventListener('click', () => {
+    if (carrito.length === 0) return;
+    alert("Gracias por tu compra. Redirigiendo a pasarela de pago...");
+    carrito = [];
+    actualizarContador();
+    renderCarrito();
+    cartModal.style.display = "none";
+});
+
+// --- INICIALIZACIÓN ---
+renderLibros();
