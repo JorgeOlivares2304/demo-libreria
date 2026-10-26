@@ -15,12 +15,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-    background-color: var(--color-fondo);
-    color: var(--color-texto);
-}
-
-/* --- HEADER Y NAVEGACIÓN --- */
+/* --- HEADER Y NAVEGACIÓN FIJOS (STICKY) --- */
 header {
     background-color: var(--blanco);
     padding: 10px 5%;
@@ -28,56 +23,14 @@ header {
     justify-content: space-between;
     align-items: center;
     border-bottom: 2px solid var(--color-secundario);
-}
-
-.logo {
-    font-family: 'Brush Script MT', cursive;
-    font-size: 2.5rem;
-    color: var(--color-primario);
-    font-weight: bold;
-}
-
-.search-bar {
-    display: flex;
-    align-items: center;
-    background: #eee;
-    padding: 5px 15px;
-    border-radius: 20px;
-    width: 40%;
-}
-
-.search-bar input {
-    border: none;
-    background: transparent;
-    outline: none;
+    
+    /* NUEVOS ESTILOS PARA FIJAR */
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 5px;
-}
-
-.header-icons {
-    display: flex;
-    gap: 20px;
-    font-size: 1.2rem;
-    color: var(--color-primario);
-    position: relative;
-}
-
-.cart-icon-container {
-    cursor: pointer;
-    position: relative;
-}
-
-/* Contador del carrito */
-#cart-count {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background-color: var(--color-precio);
-    color: white;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 0.8rem;
-    font-weight: bold;
+    z-index: 1000; /* Asegura que siempre esté por encima del contenido */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra sutil para dar efecto de elevación */
 }
 
 /* Navegación Secundaria */
@@ -87,18 +40,22 @@ nav {
     display: flex;
     justify-content: center;
     gap: 30px;
+    
+    /* NUEVOS ESTILOS PARA FIJAR JUSTO DEBAJO DEL HEADER */
+    position: fixed;
+    top: 75px; /* Ajusta este valor si tu header es más alto o más bajo */
+    left: 0;
+    width: 100%;
+    z-index: 999; /* Un nivel por debajo del header */
 }
 
-nav a {
-    text-decoration: none;
-    color: var(--blanco);
-    font-weight: bold;
-    font-size: 0.9rem;
+/* IMPORTANTE: Evitar que el contenido se oculte debajo del menú fijo */
+body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    padding-top: 120px; /* Espacio equivalente a la suma del header y el nav */
 }
 
-nav a:hover {
-    text-decoration: underline;
-}
 
 /* --- BANNER PRINCIPAL --- */
 .hero {
