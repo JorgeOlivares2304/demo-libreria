@@ -23,7 +23,7 @@ const libros = [
     { id: 9, titulo: "Una habitación propia", autor: "Virginia Woolf", precio: 240, categoria: "Clásico", stock: 2, img: "https://images.unsplash.com/photo-1509266272358-7701da638078?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
     { id: 11, titulo: "Ariel", autor: "José Enrique Rodó", precio: 120, categoria: "Clásico", stock: 5, img: "https://images.unsplash.com/photo-1490633874781-1c63cc424610?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
     { id: 20, titulo: "La Odisea", autor: "Homero", precio: 320, categoria: "Clásico", stock: 4, img: "https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
-    { id: 21, titulo: "Hamlet", autor: "William Shakespeare", precio: 200, categoria: "Clásico", stock: 0, img: "https://images.unsplash.com/photo-1524578271613-d550eacf6090?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
+    { id: 21, titulo: "Hamlet", autor: "William Shakespeare", precio: 200, categoria: "Clásico", stock: 6, img: "https://images.unsplash.com/photo-1524578271613-d550eacf6090?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
 
     // --- Poesía (6 libros) ---
     { id: 10, titulo: "Veinte poemas de amor", autor: "Pablo Neruda", precio: 200, categoria: "Poesía", stock: 8, img: "https://images.unsplash.com/photo-1474932430478-367dbb6832c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
@@ -35,7 +35,8 @@ const libros = [
 ];
 
 // --- ESTADO GLOBAL ---
-let carrito = []; 
+// Criterio 3: Recuperar carrito de localStorage al iniciar la página
+let carrito = JSON.parse(localStorage.getItem('carritoElTunel')) || []; 
 let filtroCategoria = 'all';
 let terminoBusqueda = '';
 
@@ -47,12 +48,12 @@ const cartItemsContainer = document.getElementById('cartItemsContainer');
 const cartTotal = document.getElementById('cartTotal');
 const searchInput = document.getElementById('searchInput');
 const filterContainer = document.getElementById('filterContainer');
+const toastNotification = document.getElementById('toast-notification');
 
 // --- FUNCIONES PRINCIPALES ---
 
-// 1. Filtrar y Renderizar Libros (Ahora con Scroll Horizontal)
+// 1. Filtrar y Renderizar Libros
 function renderLibros() {
-    // Filtrar por categoría y búsqueda
     let librosFiltrados = libros.filter(libro => {
         const matchCategoria = filtroCategoria === 'all' || libro.categoria === filtroCategoria;
         const matchBusqueda = libro.titulo.toLowerCase().includes(terminoBusqueda.toLowerCase()) || 
@@ -60,10 +61,8 @@ function renderLibros() {
         return matchCategoria && matchBusqueda;
     });
 
-    // Limpiar grid
     booksGrid.innerHTML = '';
 
-    // Caso: No hay resultados
     if (librosFiltrados.length === 0) {
         booksGrid.innerHTML = `<div style="width: 100%; text-align: center; padding: 40px;">
             <h3>No se encontraron libros que coincidan con tu búsqueda.</h3>
@@ -72,10 +71,8 @@ function renderLibros() {
         return;
     }
 
-    // Renderizar todos los libros (flexbox se encarga del scroll)
     librosFiltrados.forEach(libro => {
         const sinStock = libro.stock <= 0;
-        
         const card = document.createElement('div');
         card.className = 'book-card';
         card.innerHTML = `
@@ -91,17 +88,22 @@ function renderLibros() {
     });
 }
 
-// 2. Agregar al Carrito
+// Función para guardar en localStorage y actualizar contador (Criterio 3 y 4)
+function guardarCarritoYActualizarUI() {
+    localStorage.setItem('carritoElTunel', JSON.stringify(carrito));
+    const totalItems = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+    cartCount.innerText = totalItems;
+}
+
+// 2. Agregar al Carrito (Criterios 1, 2, 3, 4, 5 y Opcional)
 window.agregarAlCarrito = (id) => {
     const libro = libros.find(l => l.id === id);
     
-    if (libro.stock <= 0) {
-        alert("Lo sentimos, este libro está agotado.");
-        return;
-    }
+    if (libro.stock <= 0) return;
 
     const itemEnCarrito = carrito.find(item => item.id === id);
     
+    // Criterio 5: Validación de stock al sumar
     if (itemEnCarrito) {
         if (itemEnCarrito.cantidad < libro.stock) {
             itemEnCarrito.cantidad++;
@@ -110,25 +112,32 @@ window.agregarAlCarrito = (id) => {
             return;
         }
     } else {
+        // Criterio 2: Obtener info (en este caso solo guardamos ID y cantidad para no duplicar datos)
         carrito.push({ id: id, cantidad: 1 });
     }
 
-    actualizarContador();
+    guardarCarritoYActualizarUI(); // Guarda y actualiza el contador
+    
+    // Opcional: Mostrar notificación
+    mostrarNotificacion();
 };
 
-// 3. Actualizar Contador
-function actualizarContador() {
-    const totalItems = carrito.reduce((acc, item) => acc + item.cantidad, 0);
-    cartCount.innerText = totalItems;
+// Función para mostrar la notificación flotante
+function mostrarNotificacion() {
+    if(!toastNotification) return;
+    toastNotification.classList.add('show');
+    setTimeout(() => {
+        toastNotification.classList.remove('show');
+    }, 2500);
 }
 
-// 4. Mostrar Carrito
+// 3. Mostrar Carrito
 function abrirCarrito() {
     cartModal.style.display = "block";
     renderCarrito();
 }
 
-// 5. Renderizar Carrito
+// 4. Renderizar Carrito
 function renderCarrito() {
     cartItemsContainer.innerHTML = '';
     
@@ -151,8 +160,6 @@ function renderCarrito() {
 
         const div = document.createElement('div');
         div.className = 'cart-item';
-        
-        // --- AQUI ESTA EL CAMBIO: Agregamos la imagen y agrupamos el texto ---
         div.innerHTML = `
             <img src="${libro.img}" alt="${libro.titulo}" class="cart-item-img">
             <div class="cart-item-info">
@@ -169,10 +176,10 @@ function renderCarrito() {
     cartTotal.innerText = `Total: $${total.toFixed(2)}`;
 }
 
-// 6. Eliminar del Carrito
+// 5. Eliminar del Carrito
 window.eliminarDelCarrito = (id) => {
     carrito = carrito.filter(item => item.id !== id);
-    actualizarContador();
+    guardarCarritoYActualizarUI();
     renderCarrito();
 };
 
@@ -189,7 +196,6 @@ filterContainer.addEventListener('click', (e) => {
     if (e.target.classList.contains('filter-btn')) {
         document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
         e.target.classList.add('active');
-        
         filtroCategoria = e.target.dataset.category;
         renderLibros();
     }
@@ -214,7 +220,7 @@ window.addEventListener('click', (e) => {
 document.getElementById('clearCartBtn').addEventListener('click', () => {
     if(confirm("¿Estás seguro de vaciar el carrito?")) {
         carrito = [];
-        actualizarContador();
+        guardarCarritoYActualizarUI();
         renderCarrito();
     }
 });
@@ -224,10 +230,12 @@ document.getElementById('checkoutBtn').addEventListener('click', () => {
     if (carrito.length === 0) return;
     alert("Gracias por tu compra. Redirigiendo a pasarela de pago...");
     carrito = [];
-    actualizarContador();
+    guardarCarritoYActualizarUI();
     renderCarrito();
     cartModal.style.display = "none";
 });
 
 // --- INICIALIZACIÓN ---
+// Criterio 4: Reflejar el contador visual al cargar la página si había items guardados
+guardarCarritoYActualizarUI();
 renderLibros();
